@@ -258,7 +258,7 @@ export function useGameState() {
   // ── Actions joueur ─────────────────────────────────────────────────────────
 
   function selectCard(card: Card) {
-    setState((s) => {
+    setState((s: GameState) => {
       if (s.screen !== 'game' || aiScheduledRef.current || resolvingRef.current) return s
       const playerLeads    = s.trickPhase === 'lead'    && s.currentLeader === 'player'
       const playerResponds = s.trickPhase === 'respond' && s.currentLeader === 'player'
@@ -276,7 +276,7 @@ export function useGameState() {
   }
 
   function playSelected() {
-    setState((s) => {
+    setState((s: GameState) => {
       if (s.screen !== 'game' || !s.selectedCard || aiScheduledRef.current || resolvingRef.current) return s
       return doPlay(s, s.selectedCard)
     })
@@ -395,12 +395,12 @@ export function useGameState() {
       timerRef.current = setTimeout(() => {
         resolvingRef.current = false
         if (resolved.currentLeader === 'ai') {
-          setState((s) => {
+          setState((s: GameState) => {
             scheduleAiLead(s)
             return { ...s, statusMessage: "L'IA mene le pli suivant...", statusKind: 'info' }
           })
         } else {
-          setState((s) => ({ ...s, statusMessage: 'A vous de mener.', statusKind: 'info' }))
+          setState((s: GameState) => ({ ...s, statusMessage: 'A vous de mener.', statusKind: 'info' as const }))
         }
       }, RESOLVE_SHOW_MS)
     }, RESOLVE_SHOW_MS)

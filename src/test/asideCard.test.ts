@@ -136,7 +136,7 @@ describe('Scénario complet — Exemple 1 (specs)', () => {
     expect(aiAwaits).toBe('♠')
 
     // Pioche : IA reçoit ♠9
-    let aiState = { ...makePlayer([makeCard('♥', '7')]), awaitingSuit: aiAwaits as '♠' }
+    let aiState = { ...makePlayer([makeCard('♥', '7')]), awaitingSuit: aiAwaits as import('@/types').Suit }
     aiState = drawFor(aiState, makeCard('♠', '9'))
     expect(aiState.asideCard?.id).toBe('♠9')
     expect(aiState.hand).toHaveLength(1) // ♥7 toujours là, ♠9 de côté
@@ -160,7 +160,7 @@ describe('Scénario complet — Exemple 2 (specs)', () => {
     const { playerAwaits } = computeAwaitingSuit(makeCard('♥', 'R'), 'ai', makeCard('♦', 'V'))
     expect(playerAwaits).toBe('♥')
 
-    let ps = { ...makePlayer([makeCard('♠', '8'), makeCard('♦', '7')]), awaitingSuit: playerAwaits as '♥' }
+    let ps = { ...makePlayer([makeCard('♠', '8'), makeCard('♦', '7')]), awaitingSuit: playerAwaits as import('@/types').Suit }
     ps = drawFor(ps, makeCard('♥', 'A'))
     expect(ps.asideCard?.id).toBe('♥A')
     expect(ps.hand).toHaveLength(2) // ♠8 et ♦7, ♥A de côté
@@ -175,7 +175,7 @@ describe('Scénario complet — Exemple 2 (specs)', () => {
 describe('Cas limites', () => {
   it('pas de mise de côté si la pioche tombe sur une autre couleur', () => {
     const { aiAwaits } = computeAwaitingSuit(makeCard('♠', '10'), 'player', makeCard('♦', '8'))
-    let ai = { ...makePlayer([]), awaitingSuit: aiAwaits as '♠' }
+    let ai = { ...makePlayer([]), awaitingSuit: aiAwaits as import('@/types').Suit }
     ai = drawFor(ai, makeCard('♥', 'R')) // pioche ♥ alors qu'on surveille ♠
     expect(ai.asideCard).toBeNull()
     expect(ai.hand).toHaveLength(1)
@@ -193,8 +193,8 @@ describe('Cas limites', () => {
     const aside = makeCard('♣', 'R')
     let ps = {
       ...makePlayer([]),
-      asideCard: aside,
-      awaitingSuit: null, // déjà effacé après la première mise de côté
+      asideCard: aside as import('@/types').Card,
+      awaitingSuit: null as import('@/types').Suit | null,
     }
     ps = drawFor(ps, makeCard('♣', '9'))
     // La nouvelle pioche va en main car awaitingSuit est null

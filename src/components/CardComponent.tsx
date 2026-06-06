@@ -1,3 +1,4 @@
+import React from 'react'
 import { Card, RANK_ORDER } from '@/types'
 import { CardFaceSvg, CardBackSvg, CARD_W, CARD_H } from './CardSvg'
 
@@ -29,7 +30,7 @@ export function CardComponent({ card, onClick, disabled = false, selected = fals
       role={!disabled ? 'button' : undefined}
       aria-label={`${card.rank} ${card.suit}`}
       tabIndex={!disabled ? 0 : undefined}
-      onKeyDown={!disabled ? (e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.() } : undefined}
+      onKeyDown={!disabled ? (e: React.KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') onClick?.() } : undefined}
     >
       <CardFaceSvg card={card} />
     </div>

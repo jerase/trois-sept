@@ -4,11 +4,11 @@
  * Ces tests vérifient que les fonctions pures qui alimentent le hook
  * produisent les bonnes transitions d'état, sans avoir besoin de React.
  */
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { makeDeck, deal, makeCard } from '@/game/deck'
 import { trickWinner, calcScore, validateResponse, isStronger } from '@/game/rules'
 import { aiChooseCard } from '@/game/ai'
-import { SUITS, RANKS, type Card, type PlayerKey, VICTORY_SCORE } from '@/types'
+import { SUITS, type Card, type PlayerKey, VICTORY_SCORE } from '@/types'
 
 // ── helpers reproduced from hook (pure functions only) ────────────────────────
 
@@ -133,7 +133,7 @@ describe('Gagnant du pli — meme couleur', () => {
     ['8',  '7',  'player'],   // 8 bat 7
     ['7',  '10', 'ai'],       // 7 perd contre 10
   ]
-  it.each(cases)('%s bat %s', (leadRank, respRank, expected) => {
+  it.each(cases)('%s bat %s', (leadRank: string, respRank: string, expected: PlayerKey) => {
     const lead = makeCard('♥', leadRank as any)
     const resp = makeCard('♥', respRank as any)
     expect(trickWinner(lead, 'player', resp)).toBe(expected)
